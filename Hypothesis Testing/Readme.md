@@ -4,7 +4,7 @@ This App shows, through different plots, how hypothesis tests work for Normal sa
 
 The layout of the App is compounded of three parts:
 
-<img src="https://github.com/DavidGarHeredia/teaching/blob/master/Hypothesis%20Testing/HT.png" alt="layout" width="600" height="450">
+<img src="https://github.com/DavidGarHeredia/teaching/blob/master/Hypothesis%20Testing/HT1.png" alt="layout" width="600" height="450">
 
 1. A left side panel: There you will be able to select:
 
