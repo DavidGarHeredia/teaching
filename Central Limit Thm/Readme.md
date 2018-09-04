@@ -1,10 +1,10 @@
 # Central Limit Theorem
 
-This App empirically illustrates the Central Limit Theorem for some well-known probability distributions. To use it, open RStudio and run the code that you will find in the file ``Central Limit Thm.R''.
+This App empirically illustrates the Central Limit Theorem for some well-known probability distributions. To use it, open RStudio and run the code that you will find in the file "Central Limit Thm.R".
 
 In the window that will pop-up, you will see a layout compounded of three parts:
 
-![layout](/teaching/Central Limit Thm/TCL.png =50x50)
+![layout](https://github.com/DavidGarHeredia/teaching/edit/master/Central%20Limit%20Thm/TCL.png)
 
 1. A left side panel: There you will be able to select:
 
