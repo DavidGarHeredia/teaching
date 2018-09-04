@@ -4,7 +4,7 @@ This App empirically illustrates the Central Limit Theorem for some well-known p
 
 In the window that will pop-up, you will see a layout compounded of three parts:
 
-<img src="https://github.com/DavidGarHeredia/teaching/blob/master/Central%20Limit%20Thm/TCL1.png" alt="layout" width="600" height="400">
+<img src="https://github.com/DavidGarHeredia/teaching/blob/master/Central%20Limit%20Thm/TCL1.png" alt="layout" width="650" height="400">
 
 1. A left side panel: There you will be able to select:
 
