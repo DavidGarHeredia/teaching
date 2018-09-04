@@ -16,7 +16,8 @@ In the window that will pop-up, you will see a layout compounded of three parts:
 
 2. A plot-panel: Here you will see the histogram (or bar plot) resulting from what was established in the left side panel. When the number of Random Variables added is large, the Normal distribution will appear the theorem states.
 
-3. A text-panel: Above the plot it appears the theoretical mean and standard deviation of the resulting Normal approximation. Ex.: When adding $n$ Poisson RVs *iid*, the resulting RV will be Normally distributed with parameters $\mu = n\lambda$, $\sigma = \sqrt {n\lambda}$.
+3. <p>A text-panel: Above the plot it appears the theoretical mean and standard deviation of the resulting Normal approximation. Ex.: When adding <span class="math"><em>n</em></span> Poisson RVs *iid*, the resulting RV will be Normally distributed with parameters <span class="math"><em>μ</em> = <em>n</em><em>λ</em></span>, <span class="math">$\sigma = \sqrt {n\lambda}$</span>.</p>
+
 
 
 ### Packages required
