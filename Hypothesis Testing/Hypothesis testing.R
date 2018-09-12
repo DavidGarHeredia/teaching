@@ -1,3 +1,7 @@
+# Author: David García Heredia
+# Date: September 2018
+# https://github.com/DavidGarHeredia/teaching
+
 ##################
 # Libraries
 ##################
