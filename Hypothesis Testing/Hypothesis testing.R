@@ -41,7 +41,7 @@ get_quantiles <- function(B_tdist, input){
 
 
 get_statistic <- function(B_tdist, input){
-  value = (input$x_mean - input$mu0)/sqrt(input$sigma/input$n)
+  value = (input$x_mean - input$mu0)*sqrt(input$n)/input$sigma
   if (B_tdist){
     value = (input$x_mean - input$mu0)*sqrt(input$n)/input$x_sd
   }
