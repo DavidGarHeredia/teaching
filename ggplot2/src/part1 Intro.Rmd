@@ -1,0 +1,134 @@
+
+## What is ggplot2?
+
+`Ggplot2` is an `R` library designed to create statistical graphics which, opposite to the basic plot-functions provided in `R`, allows us to have more control of our graphs. That is, we can manipulate almost any feature of a plot to get the best visual representation for our problem. In addition to that, with a small amount of effort, we will make really beautiful plots which will enhance the presentation of our results.
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+Have in mind that the goal in visualization is not to make beautiful pictures, but to help us to convey our results in a more simple and straightforward way.
+\end{shaded}
+
+
+## How does ggplot2 work?
+
+The strength of `ggplot2` lies in the fact that it defines each plot as a collection of **independent layers** which are later combined to produce the desired graph. This allows us, not only to use a set of pre-specified graphics, but also to create our own graphs to better describe the problem that we are facing.
+
+The layers which form any plot are:
+
+* The **data** that you want to visualize and a **mapping** of it to the variables that will form the plot (e.g.: what column/variable of the data frame corresponds to the x-axis and which one to the y-axis).
+
+* The **geometric** objects that you will see in the plot: points, lines, polygons...
+
+* The **statistical** transformations that are used to summarize the data (e.g.: counting observations to make a histogram).
+
+* The **scales** or visual features of the plot (e.g.: color, size, shape...).
+
+* The **coordinate** system: Cartesian, polar, map projection.
+
+* **Faceting**: specifications on how to break up the data into subsets and how to display them, e.g.: make 5 plots, 1 per continent, showing the historical evolution of their Gross Domestic Product (GDP). In the example, continents would be the splitting specification. Notice that we will not always want to make a partition of the data set so, in those cases, we will not define this layer.
+
+To better understand the idea of the layers, let's check the following example which will also help us to show the kind of plots that we will be able to do by the end of this document.
+
+### Example
+
+Let's start loading the `ggplot2` library and a data set called ``diamond''.
+
+```{r}
+library(ggplot2)
+
+set.seed(1410) # Fix a random seed to make the experiment reproducible
+dsmall <- diamonds[sample(nrow(diamonds), 1000), ] # Select a subset of 1K observations
+
+head(dsmall) # To check the info in the data set
+```
+
+The meaning of each of the variables of the data set is:
+
+* *Carat*: Weight of the diamond. **Continuous variable**.
+* *Cut*: Quality of the cut (Fair, Good, Very Good, Premium, Ideal). **Categorical variable**.
+* *Color*: Diamond color, from D (best) to J (worst). **Categorical variable**.
+* *Clarity*: A measurement of how clear the diamond is (I1 (worst), SI2, SI1, VS2, VS1, VVS2, VVS1, IF (best)). **Categorical variable**.
+* *Price*: Price in US Dollars of the diamond. Although just integer numbers are collected, it makes more sense to treat it as a **continuous variable**.
+
+As we will not use the rest of the variables showed in the table, we skip their description (which can be found on the Internet).
+
+Now, imagine that we want to make the following plot (pay attention to the words in bold): We want, for **each type of cut**, a **scatter plot** to visualize the **price** of the diamonds according to their **weight**. Furthermore, depending on the variable `color` (see above in the table), we also want to **assign a color** to each observation. 
+Let's check what would be the layers of the plot in this example:
+
+* The **data** will be the set `dsmall`. 
+
+* The **mapping** will be the assignation of variable $x$ to the column `carat`, and variable $y$ to the column `price`  (check below in the code).
+
+* The **geometric** object will be points (we want a scatter plot).
+
+* In this case, there will be no **statistical** layer.
+
+* The color rule for the points will make the **scale** layer.
+
+* We will use the default **coordinate** system: Cartesian.
+
+* Variable `cut` will define our **faceting** layer: we want to split the data so we make a plot for each type of cut.
+
+The code to make the desired plot is the following one (notice how we use $+$ to add the layers):
+
+```{r fig.pos = 'h', fig.align = "center", out.width = '80%', fig.cap="\\label{fig:ExamplePlot}Our first plot with ggplot2."}
+ggplot(dsmall, aes(x = carat, y = price, color = color)) + # data, 
+                                                           # mapping (x, y) and 
+                                                           # scale (color) layers.
+  facet_wrap(~ cut, ncol = 3) + # faceting layer.
+  geom_point(alpha = 0.5) + # geometric layer
+                            # alpha is the transparency, so it is part of the scale layer.
+  theme(legend.position = "bottom") 
+```
+
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+It is quite common to define the mapping layer inside the \texttt{ggplot()} function. However, this can also be defined inside the \texttt{geom()} functions. This is useful if, for instance, we want to add different \texttt{geom} layers, each of them representing different information.
+\end{shaded}
+
+
+**Preliminary conclusion** from the plot? It does not seem to exist a relationship between the quality of the cut and the price, i.e.: for the same weight value, prices are similar for the different cut qualities. **However**, to actually draw a conclusion, we would have to use the statistical techniques learned during the course. Have in mind that plots are great to get an idea of the situation and to convey results, **but they are not maths**. So for instance, if the relationship between variables was linear, we could use Linear Regression techniques to study the significance of the variable `cut`. 
+
+
+## Notes about the color scales
+
+Before showing how to use `ggplot2`, it is important to make a few comments about what colors to use in our plots. When using a color scale, we should be aware of using one that: 1) Shows uniformity in the color gradient, 2) It does not lead to misinterpretation of results when printed in black-and-white, and 3) If possible, it is colorblind-friendly.
+
+Classic color scales, like the ones shown in Figure \ref{fig:Scales1}, do not respect the abovementioned principles, so they should be avoided. For instance, when a heatmap that uses `jet.colors` is printed in black-and-white, it will produce a misinterpreation of the results because it is impossible to distinguish blue and red areas!
+
+  
+```{r, echo = FALSE, out.width = '80%', fig.pos = 'h',  fig.align = "center", fig.cap="\\label{fig:Scales1}Color scales to avoid."}
+library(viridisLite)
+
+# MATLAB's color palette
+jet.colors <- colorRampPalette(c("#00007F", "blue", "#007FFF", "cyan",
+                                 "#7FFF7F", "yellow", "#FF7F00", "red", 
+                                 "#7F0000"))
+
+
+testPalette <- function(col, n = 200, ...) {
+  image(1:n, 1, as.matrix(1:n), col = get(col)(n = n, ...), 
+        main = col, xlab = "", ylab = "", axes = FALSE)
+}
+
+par(mar=c(25, 1, 3, 1), mfrow = c(1, 6))
+
+res <- sapply(c("rainbow", "topo.colors", "terrain.colors", 
+                "heat.colors", "cm.colors", "jet.colors"), testPalette)
+```
+
+To solve these problems, there is a package called `viridisLite` which contains different color scales having the three mentioned properties (see in Figure \ref{fig:Scales2}). Special mention to the color scale Cividis, which is specifically aimed at people with color vision deficiency.
+
+```{r echo = FALSE, out.width = '80%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:Scales2}Recommended color scales."}
+par(mar=c(25, 1, 3, 1), mfrow = c(1, 5))
+res <- sapply(c("viridis", "magma", "inferno", "plasma", "cividis"), 
+              testPalette)
+```
+
+As a conclusion of all this, the color scales that we will be using in this document are those of the `viridisLite` package.
+
+
+
+
+

@@ -1,0 +1,57 @@
+---
+title: "Plotting with ggplot2"
+author: "David García Heredia"
+date: '2019-12-01'
+output: 
+  pdf_document:
+    number_sections: yes
+    fig_caption: yes
+header-includes:
+  - \usepackage{xcolor}
+  - \usepackage{framed}
+---
+
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(echo = TRUE) # display code unless specified
+knitr::opts_chunk$set(eval = TRUE) # eval code unless specified
+
+# We load here libraries to avoid problems when commenting parts
+library(ggplot2)
+library(viridisLite) 
+set.seed(1410) # Fix a random seed to make the experiment reproducible
+dsmall <- diamonds[sample(nrow(diamonds), 1000), ] # Select a subset of 1K observations
+```
+
+# Intro to ggplot2
+
+```{r child = 'part1 Intro.Rmd'}
+```
+
+# Hands on ggplot2
+
+```{r child = 'part2 BasicPlots.Rmd'}
+```
+
+
+# More plots in ggplot2
+
+```{r child = 'part3 SeveralPlots.Rmd'}
+```
+
+
+# References
+
+We conclude this document citing the references employed to create it, and providing some comments about what can be found in each of them.
+
+
+
+1. [*Wickham, H., & Grolemund, G. (2016). R for data science: import, tidy, transform, visualize, and model data. O'Reilly Media, Inc*](https://r4ds.had.co.nz/index.html). In the third chapter of this fantastic book, there is a great introduction to `ggplot2`, where some extra content not addressed here can be found. Furthermore, the book is legally available online for free!!!
+
+2. The following links provide more information about: 1) the color scales and 2) The types of graphs that can be made with `ggplot2`:
+    i) <https://codingclubuc3m.rbind.io/post/2018-05-10/>
+    ii) <https://codingclubuc3m.github.io/20190305_slides/#1>
+    iii) <http://r-statistics.co/Top50-Ggplot2-Visualizations-MasterList-R-Code.html>
+
+4. For a complete (and advanced) guide in `ggplot2`, check out the book: *Wickham, H. (2016). ggplot2: elegant graphics for data analysis. Springer.*
+

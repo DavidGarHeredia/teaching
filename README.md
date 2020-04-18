@@ -1,7 +1,3 @@
-# Shiny Apps
-In the folders of this repository you will find different Shiny Apps oriented to illustrate statistical concepts. 
+# Teaching materials
 
-So far the list is composed by:
-
-1. Central Limit Thm.R
-2. Hypothesis testing.R
+Non-standard teaching materials that I've used in some of my statistics courses.

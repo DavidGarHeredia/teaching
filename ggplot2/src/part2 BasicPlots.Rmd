@@ -1,0 +1,184 @@
+
+
+Now that we know what is `ggplot2` and that it works through **layers**, let's start making some plots and learning how to modify different features of them. For that, we will start studying, using a box plot, the spread in diamonds' price according to their cut quality. 
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot1}Box plots with ggplot2."}
+# Notice how we can save a plot in a variable like if it was a number!
+plot1 <- ggplot(dsmall, aes(x = cut, y = price)) # data and mapping
+plot1 <- plot1 + geom_boxplot() # statistical layer
+print(plot1)
+```
+
+As you can see, just with two lines of code we got to produce the desired plot, but with the advantage of making it look great. Nevertheless, we might want to modify that plot in different ways, e.g.: adding color, a title, a legend, changing the background, etc. Let's see how to do that.
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+Almost anything you want to do to a plot can be done with \texttt{ggplot2}. So, whenever you want to do something not explained in this manual, just check on the Internet and you will find how to do it. For example, the boxplots of Figure \ref{fig:BoxPlot1} can be reordered in ascending order using function \texttt{reorder()} to make the trend easier to see. Check on the Internet how!
+\end{shaded}
+
+## Adding colors
+
+### Changing the color of the borders
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot2}Changing the color of the box plots."}
+library(viridisLite)
+plot2 <- ggplot(dsmall, aes(x = cut, y = price)) 
+plot2 <- plot2 + geom_boxplot(aes(color = cut)) # one color for each boxplot
+plot2 <- plot2 + scale_color_viridis_d(option = "magma") # using magma color scale
+print(plot2)
+```
+
+As we are coloring according to a discrete value (the `cut`), we use the function `scale_color_viridis_d()`. For continuous values, we would use `scale_color_viridis_c()` (the last letter changes: "d" for discrete and "c" for continuous). Notice how, when coloring, a legend is automatically added.
+
+### Filling the box plots
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot3}Filling with color the box plots."}
+plot3 <- ggplot(dsmall, aes(x = cut, y = price)) 
+plot3 <- plot3 + geom_boxplot(aes(fill = cut)) 
+plot3 <- plot3 + scale_fill_viridis_d(alpha = 0.6) # adding also transparency
+print(plot3)
+```
+
+Now, as we are filling the box plots, we do not use `scale_color_viridis_d()`, but `scale_fill_viridis_d()` (we changed the word *color* by *fill*).
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+This way of coloring taking into account if we want just to color the borders or fill the plot, and if the variables are discrete or continuous, might seem a little bit confusing at the beginning, but it is extremely powerful and it is not difficult to get used to it. 
+\end{shaded}
+
+### Changing the theme
+
+In `ggplot2` there exist predefined themes that establish some of the aesthetic properties of the final plot, e.g.: the initial color of the background, how the axes will look, etc. As an example, compare the plot shown in Figure \ref{fig:BoxPlot4}, where a different theme has been used, with the previous ones.
+
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot4}Changing the theme in ggplot2."}
+plot4 <- ggplot(dsmall, aes(x = cut, y = price)) 
+plot4 <- plot4 + geom_boxplot(aes(fill = cut, color = cut)) # fill and color
+plot4 <- plot4 + scale_color_viridis_d(option = "cividis")
+plot4 <- plot4 + scale_fill_viridis_d(alpha = 0.5, option = "cividis") # using cividis 
+plot4 <- plot4 + theme_light() # https://ggplot2.tidyverse.org/reference/ggtheme.html
+print(plot4)
+```
+
+Now that we know how to change the color of a plot, let's see how to change the title, axes etc.
+
+<!-- \newpage -->
+<!-- \pagebreak[4] -->
+
+## Title, axes and more
+
+Let's add the following modifications to the plot saved in variable `plot3`:
+
+1. A title. 
+2. A different name for the axes. 
+3. Different labels for the x-axis: instead of the type of cut, just one letter will appear. Notice that in this case, this last change is counterproductive because the name of the cut is informative, while a letter is not. However, we will do it anyway because most of the times the situation is the opposite: we have non-informative labels and we want to change them.
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot5}Adding a title to the plot."}
+# Title and name of the axes
+plot3 <- plot3 + labs(title = "Spread of price for each type of cut",
+                      y = "Price ($)", 
+                      x = "Type of cut"
+                      ) # We could also add a subtitle and a caption.
+
+# Labels of x-axis
+labelsX <- c("F", "G", "VG", "P", "I") # save new labels in a variable
+plot3 <- plot3 + scale_x_discrete(labels = labelsX)
+print(plot3)
+```
+
+
+Notice that changing the labels of the x-axis **does not** change the labels of the legend (recall that in `ggplot2` we work with independent layers). In the next section we will see how to also change the names in the legend, but here you can see that, to avoid code repetition, it was a good idea to save the new labels in variable `labelsX`.
+
+As you can see, in the previous plot, the title does not appear in the center and it has the same color that the axes. Let's see how to change that and, for instance, how to rotate the labels of the x-axis too.
+
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot6}Changing fonts."}
+# Note: check color names in http://sape.inf.usi.ch/quick-reference/ggplot2/colour
+plot3 <- plot3 + theme(plot.title = element_text(size   = 15,
+                                                 face   = "bold",
+                                                 family = "serif",
+                                                 color  = "tomato",
+                                                 hjust  = 0.5),  
+                       axis.text.x = element_text(angle = 30,
+                                                  vjust = .5)
+                      )  
+print(plot3)
+```
+
+\newpage
+
+### Legend
+
+Let's start learning how to modify the title and labels of the legend. Again, notice that in this case, modifying the labels makes no sense because the names that appear (those of the data set) are already good.
+
+```{r warning = FALSE, message = FALSE, out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot7}Modifying the legend."}
+plot3 <- plot3 + scale_fill_viridis_d(alpha  = 0.6, 
+                                      name   = "Cut quality",
+                                      labels = labelsX)
+print(plot3)
+```
+
+**Important!** If instead of having filled the box plots, we had colored the borders, we would have used the function `scale_color_viridis_d`.
+
+Now check the following code to see how we can modify different features of the legend:
+
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot8}More modifications to the legend."}
+plot3 <- plot3 + theme(legend.title = element_text(colour = "blue",
+                                                   size   = 10, 
+                                                   face   = "bold"), 
+                       legend.background = element_rect(fill = "gray90", 
+                                                        size = .5, 
+                                                        linetype = "dotted"),
+                       legend.position = "top")
+print(plot3)
+```
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+Use \texttt{legend.title = element\_blank()} to remove the title of the legend and \texttt{legend.position = "none"} to remove the legend from the plot.
+\end{shaded}
+
+
+## Combining plots
+
+One of the consequences of making a plot through the addition of independent layers is that it allows us to easily combine different graphical representations in a single framework. For instance, imagine that we want to make visible all the points in each box plot and not only the outliers. That is, we want to have in the same plot two graphical representations at the same time: The observations (points) and the box plot. We can achive that by adding to the plot the corresponding two layers as shown below:
+
+ 
+```{r out.width = '50%', fig.pos = 'h', fig.align = "center", fig.cap="\\label{fig:BoxPlot9}Multiple geom in one plot."}
+# Change the properties of the outliers to easily distinguish them
+plot3 <- plot3 + geom_boxplot(aes(fill = cut), 
+                              outlier.fill = "turquoise1",
+                              outlier.alpha = 0.4, # some transparency to the outliers
+                              outlier.shape = 23)
+
+# Make all the points visibles. Add transparency to better visualize them
+plot3 <- plot3 + geom_point(alpha = 0.1) # Affects to all the points but the outliers
+print(plot3)
+```
+
+
+ 
+
+## Saving our plots
+
+Once we have all the code to make our plots, for sure we do not want to save them manually one by one clicking on `Export -> save as Image` etc. This is especially relevant when we have made several plots and/or when we want to make the same plots for different data sets. To save the plots automatically we can use the function `ggsave`.
+
+```{r eval = FALSE}
+ggsave(file = "myggplot1.png",  plot = plot1) 
+# We can indicate the folder where we want to save our plots
+folderPath  = "Folder1/.../ProjectFolder/Plots/"
+ggsave(file = folderPath + "myggplot2.pdf", plot = plot2) 
+ggsave(file = "myggplot3.jpeg", plot = plot3, width = 4, height = 4)
+ggsave(file = "myggplot4.jpeg", plot = plot4, width = 12, height = 12, units = "cm")
+```
+
+\begin{shaded}
+{\color{red}{\textbf{Note:}}}
+When exporting a plot with some extensions like EPS, we might obtain a warning message saying: \textit{Transparence not preserved}. If that is the case, the solution is to install the package \texttt{Cairo} and add to the \texttt{ggsave} function the following argument: \texttt{device = cairo\_ps}.
+\end{shaded}
+
+
+
+
+
+ 
